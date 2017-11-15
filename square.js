@@ -1,24 +1,23 @@
 function Iterator(data){
     //private
     let count = 0
-    const _data = data
     
     //public methods
     this.last = function(){
-        return _data[_data.length-1]
+        return data[data.length-1]
     }
     this.isLast = function(){
         return this.last() === this.current()
     }
     this.current = function(){
-        return _data[count - 1 > 0 ? count - 1 : 0  % _data.length]
+        return data[count - 1 > 0 ? count - 1 : 0  % data.length]
     }
     this.next = function() {
-        let r = _data[count++ % _data.length]
+        let r = data[count++ % data.length]
         return r
     }
     this.filter = function(fn){
-        return new Iterator(_data.filter(fn))
+        return new Iterator(data.filter(fn))
     }
     return this
 }
