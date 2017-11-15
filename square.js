@@ -8,12 +8,23 @@
 let generateColorsForShapes = (shapes, keys = Object.keys(shapes), colorCount = 0) =>  {
     //"this" shape for "this" recursive iteration
     let shape = keys[0]
-    let neighborCount = shapes[shape].neighbors.split(',').length
+    let neighbors = shapes[shape].neighbors.split(',')
+    let neighborCount = neighbors.length
+    let tempColors = colors
+
+
+    //should remove neighboring colors from the list of colors
+    for(neighbor of neighbors){
+        let aNeighbor = shapes[neighbor]
+        if(aNeighbor.color)
+            tempColors = tempColors.filter(color => aNeighbor.color)
+    }
 
     //set the color based on the number of neighbors
     const ifCountIsGreaterThanThreeUniqueColor = neighborCount > 3 
     ? shapes[shape].color = largeNeighborCountReservedColor
-    : shapes[shape].color = colors[colorCount++%3]
+    //selects a color from the filtered list of colors and uses the modulus operator to select a color within range
+    : shapes[shape].color = tempColors[colorCount++ % tempColors.length]
 
     //"pop front", remove the first element from keys and recurse if there are any keys left
     keys.splice(0,1)
