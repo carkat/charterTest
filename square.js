@@ -1,7 +1,9 @@
 function Iterator(data){
+    //private
     let count = 0
     const _data = data
     
+    //public methods
     this.last = function(){
         return _data[_data.length-1]
     }
@@ -22,13 +24,8 @@ function Iterator(data){
 }
 
 //accepts a JSON object of shapes with a neighbor property
-//gets the keys from that object for the purposes of recursiv iteration
+//iterates of the keys of the JSON object
 //and returns a json object of shapes with neighbors + color property
-
-//please note, I don't like the use of the counter incrementing here, but given the time constraints, I used the most convenient solution
-//I also don't like all the mutation with keys.splice
-//a better solution for both instances would be an iterator over an iterable object, calling ".next" each recursive iteration
-//should make keys an iterable and colors iterable as well
 let generateColorsForShapes = (
     shapes, 
     keys = new Iterator(Object.keys(shapes)), 
@@ -37,11 +34,12 @@ let generateColorsForShapes = (
     //"this" shape for "this" recursive iteration
     const shape            = keys.next()
     const neighbors        = shapes[shape].neighbors.split(',')
-    const noNeighborColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
 
+    //filter out neighboring colors from the list of colors
+    const noNeighborColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
     shapes[shape].color = noNeighborColors.next()
 
-    //"pop front", remove the first element from keys and recurse if there are any keys left
+    //if this is the last key in shapes, return the new shapes object, otherwise continue recursion
     return keys.isLast() ? shapes : generateColorsForShapes(shapes, keys, colors)
 }
 
@@ -67,8 +65,6 @@ let shapes = {
        neighbors: "e,c,d"
     }
 }
-
-//default color data
 
 //set the color property on shapes then print the result for demonstration
 const shapesWithColors = generateColorsForShapes(shapes)
