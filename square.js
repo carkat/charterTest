@@ -1,3 +1,26 @@
+function Iterator(data){
+    let count = 0
+    const _data = data
+    
+    this.last = function(){
+        return _data[_data.length-1]
+    }
+    this.isLast = function(){
+        return this.last() === this.current()
+    }
+    this.current = function(){
+        return _data[count - 1 > 0 ? count - 1 : 0  % _data.length]
+    }
+    this.next = function() {
+        let r = _data[count++ % _data.length]
+        return r
+    }
+    this.filter = function(fn){
+        return new Iterator(_data.filter(fn))
+    }
+    return this
+}
+
 //accepts a JSON object of shapes with a neighbor property
 //gets the keys from that object for the purposes of recursiv iteration
 //and returns a json object of shapes with neighbors + color property
@@ -8,21 +31,18 @@
 //should make keys an iterable and colors iterable as well
 let generateColorsForShapes = (
     shapes, 
-    keys = Object.keys(shapes), 
-    colorCount = 0
+    keys = new Iterator(Object.keys(shapes)), 
+    colors = new Iterator(['red', 'green','blue','yellow'])
 ) =>  {
     //"this" shape for "this" recursive iteration
-    const shape                    = keys[0]
-    const neighbors                = shapes[shape].neighbors.split(',')
-    const neighborCount            = neighbors.length
-    const removedNeighboringColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
+    const shape            = keys.next()
+    const neighbors        = shapes[shape].neighbors.split(',')
+    const noNeighborColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
 
-    //set the color based on the number of neighbors
-    shapes[shape].color = removedNeighboringColors[colorCount++ % removedNeighboringColors.length]
+    shapes[shape].color = noNeighborColors.next()
 
     //"pop front", remove the first element from keys and recurse if there are any keys left
-    const keysPopFront = keys.slice(1,keys.length)
-    return keysPopFront.length === 0 ? shapes : generateColorsForShapes(shapes, keysPopFront, colorCount)
+    return keys.isLast() ? shapes : generateColorsForShapes(shapes, keys, colors)
 }
 
 //default data
@@ -49,8 +69,8 @@ let shapes = {
 }
 
 //default color data
-let colors = ['red', 'green','blue','yellow']
 
 //set the color property on shapes then print the result for demonstration
 const shapesWithColors = generateColorsForShapes(shapes)
 console.log(shapesWithColors)
+
