@@ -36,7 +36,7 @@ let generateColorsForShapes = (
 
     //filter out neighboring colors from the list of colors
     const noNeighboringColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
-    shapes[shape].color    = noNeighboringColors.next()
+    shapes[shape].color       = noNeighboringColors.next()
 
     //if this is the last key in shapes, return the new shapes object, otherwise continue recursion
     return keys.isLast() ? shapes : generateColorsForShapes(shapes, keys, colors)
