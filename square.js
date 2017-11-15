@@ -16,9 +16,10 @@ let generateColorsForShapes = (shapes, keys = Object.keys(shapes), colorCount = 
     //should remove neighboring colors from the list of colors
     for(neighbor of neighbors){
         let aNeighbor = shapes[neighbor]
-        if(aNeighbor.color)
-            tempColors = tempColors.filter(color => aNeighbor.color)
+        if(aNeighbor.color !== undefined)
+            tempColors = tempColors.filter(color => color !==  aNeighbor.color)
     }
+    console.log(tempColors)
 
     //set the color based on the number of neighbors
     const ifCountIsGreaterThanThreeUniqueColor = neighborCount > 3 
