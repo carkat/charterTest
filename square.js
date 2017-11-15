@@ -30,11 +30,11 @@ let generateColorsForShapes = (
     keys = new Iterator(Object.keys(shapes)), 
     colors = new Iterator(['red', 'green','blue','yellow'])
 ) =>  {
-    //"this" shape for "this" recursive iteration
+    //get shape, and list of neighboring shapes for current iteration
     const shape     = keys.next()
     const neighbors = shapes[shape].neighbors.split(',')
 
-    //filter out neighboring colors from the list of colors
+    //remove all neighboring colors and assign the next available color
     const noNeighboringColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
     shapes[shape].color       = noNeighboringColors.next()
 
