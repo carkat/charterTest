@@ -1,4 +1,5 @@
 const Iterator = require('./iterator.js')
+
 //accepts a JSON object of shapes with a neighbor property
 //iterates of the keys of the JSON object
 //and returns a json object of shapes with neighbors + color property
