@@ -1,7 +1,7 @@
 function Iterator(data){
     //private
     let count = 0
-    
+
     //public methods
     this.last = function(){
         return data[data.length-1]
@@ -31,12 +31,12 @@ let generateColorsForShapes = (
     colors = new Iterator(['red', 'green','blue','yellow'])
 ) =>  {
     //"this" shape for "this" recursive iteration
-    const shape            = keys.next()
-    const neighbors        = shapes[shape].neighbors.split(',')
+    const shape     = keys.next()
+    const neighbors = shapes[shape].neighbors.split(',')
 
     //filter out neighboring colors from the list of colors
-    const noNeighborColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
-    shapes[shape].color = noNeighborColors.next()
+    const noNeighboringColors = colors.filter(color => !neighbors.map(n => shapes[n].color).includes(color))
+    shapes[shape].color    = noNeighboringColors.next()
 
     //if this is the last key in shapes, return the new shapes object, otherwise continue recursion
     return keys.isLast() ? shapes : generateColorsForShapes(shapes, keys, colors)
