@@ -3,7 +3,8 @@
 //and returns a json object of shapes with neighbors + color property
 
 //please note, I don't like the use of the counter incrementing here, but given the time constraints, I used the most convenient solution
-//a better solution would be an iterator
+//I also don't like all the mutation with keys.splice
+//a better solution for both instances would be an iterator over an iterable object, calling ".next" each recursive iteration
 let generateColorsForShapes = (shapes, keys = Object.keys(shapes), colorCount = 0) =>  {
     //"this" shape for "this" recursive iteration
     let shape = keys[0]
